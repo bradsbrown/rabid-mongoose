@@ -1,6 +1,7 @@
 """Basic tests around the `/hash` GET and POST calls."""
 import pytest
 
+pytestmark = pytest.mark.usefixtures("server")
 
 def test_get_invalid(client):
     """Validate the expected client error from an invalid hash job id."""

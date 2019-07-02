@@ -1,4 +1,7 @@
 """Tests for repeated values."""
+import pytest
+
+pytestmark = pytest.mark.usefixtures("server")
 
 
 def test_repeats(client, random_string, hash_from):

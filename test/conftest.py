@@ -42,10 +42,19 @@ def client(port):
     return client
 
 
-@pytest.fixture(scope="module", autouse=True)
-def server(client):
+@pytest.fixture(scope="module")
+def start_server():
+
+    def _start_server():
+        subprocess.Popen(["./bin/broken-hashserve_darwin"])
+
+    return _start_server
+
+
+@pytest.fixture(scope="module")
+def server(start_server, client):
     """Run server for life of testing."""
-    pid = subprocess.Popen(["./bin/broken-hashserve_darwin"]).pid
+    start_server()
     yield
     client.post("/hash", data="shutdown")
 

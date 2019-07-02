@@ -1,6 +1,10 @@
 """Basic test for `/stats` endpoints."""
 import time
 
+import pytest
+
+pytestmark = pytest.mark.usefixtures("server")
+
 
 def test_stats_call(client, random_string):
     """Validate Returned stats match expected values."""

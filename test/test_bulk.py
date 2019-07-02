@@ -3,6 +3,8 @@ import concurrent.futures
 
 import pytest
 
+pytestmark = pytest.mark.usefixtures("server")
+
 
 def _bulk_post(post_call, passwords):
     result_dict = {}

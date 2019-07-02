@@ -74,7 +74,7 @@ def server(start_server, client):
     """Run server for life of testing."""
     start_server()
     yield
-    client.post("/hash", data="shutdown")
+    client.shutdown()
 
 
 @pytest.fixture

@@ -12,10 +12,10 @@ def test_stats_call(client, random_string):
     post_count = 10
     for _ in range(post_count):
         start_time = time.time()
-        id = client.post("/hash", json={"password": random_string()}).json()
-        client.get(f"/hash/{id}")
+        job_id = client.post_password(random_string()).json()
+        client.get_hash(job_id)
         time_stats.append(time.time() - start_time)
-    response = client.get("/stats")
+    response = client.get_stats()
     assert response.json()
     stats = response.json()
     assert stats["TotalRequests"] == post_count

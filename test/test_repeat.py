@@ -11,11 +11,11 @@ def test_repeats(client, random_string, hash_from):
 
     job_ids = []
     for _ in range(count):
-        job_ids.append(client.post("/hash", json={"password": password}).json())
+        job_ids.append(client.post_password(password).json())
 
     hashes = []
     for job_id in job_ids:
-        hashes.append(client.get(f"/hash/{job_id}").text)
+        hashes.append(client.get_hash(job_id).text)
 
     assert len(set(job_ids)) == count, "Fewer job ids than submissions!"
     assert len(set(hashes)) == 1, "More than one hash was found for the same password!"

@@ -5,21 +5,21 @@ pytestmark = pytest.mark.usefixtures("server")
 
 def test_get_invalid(client):
     """Validate the expected client error from an invalid hash job id."""
-    response = client.get("/hash/asdf")
+    response = client.get_hash("asdf")
     assert response.status_code == 400
 
 
 def test_basic_post(client):
     """Validate a simple job post to ensure it is accepted."""
-    response = client.post("/hash", json={"password": "test_basic_post"})
+    response = client.post_password("test_basic_post")
     job_id = response.json()
     assert job_id
 
 
 def _post_and_assert_hash_value(client, hash_from, password):
-    response = client.post("/hash", json={"password": password})
+    response = client.post_password(password)
     job_id = response.json()
-    get_response = client.get(f"/hash/{job_id}")
+    get_response = client.get_hash(job_id)
     assert get_response.status_code == 200
     assert get_response.text == hash_from(password)
 

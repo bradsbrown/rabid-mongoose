@@ -21,6 +21,18 @@ class HashClient(requests.Session):
         full_url = f"http://localhost:{self.hash_port}{url}"
         return super().request(method, full_url, *args, **kwargs)
 
+    def post_password(self, password):
+        return self.post("/hash", json={"password": password})
+
+    def get_hash(self, job_id):
+        return self.get(f"/hash/{job_id}")
+
+    def get_stats(self):
+        return self.get("/stats")
+
+    def shutdown(self):
+        return self.post("/hash", data="shutdown")
+
 
 @pytest.fixture(scope="session", autouse=True)
 def port():
@@ -51,7 +63,7 @@ def start_server():
     return _start_server
 
 
-@pytext.fixture
+@pytest.fixture
 def running_server(start_server):
     start_server()
 

@@ -1,4 +1,5 @@
 import base64
+import concurrent.futures
 import hashlib
 import os
 import random
@@ -116,3 +117,26 @@ def random_unicode():
         return ''.join(random_unicode_char() for _ in range(length))
 
     return _random_unicode
+
+
+def _get_json(response):
+    return response.json()
+
+
+@pytest.fixture
+def bulk_call():
+
+    def _bulk_call(call_fn, values, data_extract=_get_json):
+        result_dict = {}
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            future_to_data = {
+                executor.submit(call_fn, v): v
+                for v in values
+            }
+            for future in concurrent.futures.as_completed(future_to_data):
+                v = future_to_data[future]
+                result = data_extract(future.result())
+                result_dict[v] = result
+        return result_dict
+
+    return _bulk_call

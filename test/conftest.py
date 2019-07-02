@@ -51,6 +51,11 @@ def start_server():
     return _start_server
 
 
+@pytext.fixture
+def running_server(start_server):
+    start_server()
+
+
 @pytest.fixture(scope="module")
 def server(start_server, client):
     """Run server for life of testing."""

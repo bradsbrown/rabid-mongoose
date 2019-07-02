@@ -33,6 +33,17 @@ Very cool! But did you find any bugs?
 -------------------------------------
 
 Of course!
-You'll see some as you run the tests,
-but you can also view descriptions of the failures
+You'll see some failures as you run the tests,
+and you can also view details of the failures
 in the ``issues`` directory of this repository.
+
+Why did you test what you did?
+------------------------------
+
+The goal was to start with the most basic checks --
+can I actually post something and retrieve the hash, etc. --
+then to build around that looking for potential failure points.
+It seemed to me that,
+given a service using some sort of shared data store,
+and supporting concurrent calls in and out,
+that the most likely point of potential failure was in that intersection.

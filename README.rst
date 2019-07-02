@@ -47,3 +47,11 @@ It seemed to me that,
 given a service using some sort of shared data store,
 and supporting concurrent calls in and out,
 that the most likely point of potential failure was in that intersection.
+
+What is the structure here?
+---------------------------
+You'll find 3 main directories:
+
+- ``bin`` - contains the compiled server executable as well as its version file.
+- ``test`` - contains the test suite. Each ``test_{something}`` file covers a particular feature of the server.
+- ``issues`` - contains documentation of issues found, as well as a template for future issue reports.

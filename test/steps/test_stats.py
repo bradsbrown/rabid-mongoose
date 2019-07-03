@@ -2,7 +2,7 @@
 import time
 
 import pytest
-from pytest_bdd import parsers, scenarios, given, when, then
+from pytest_bdd import parsers, scenarios, when, then
 
 pytestmark = pytest.mark.usefixtures("server")
 
@@ -26,7 +26,6 @@ def multiple_password_posts(client, random_string, result):
         time_stats.append(time.time() - start_time)
 
     result.average_cycle_ms = (sum(time_stats) / len(time_stats)) * 1000
-
 
 
 @then(parsers.parse('the "{key}" value is {value}'))

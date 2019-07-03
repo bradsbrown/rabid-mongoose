@@ -1,9 +1,8 @@
 """Tests around the shutdown call."""
 import random
-import time
 
 import pytest
-from pytest_bdd import parsers, scenarios, given, when, then
+from pytest_bdd import scenarios, given, when, then
 import requests.exceptions
 
 

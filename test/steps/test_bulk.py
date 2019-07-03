@@ -26,14 +26,16 @@ def randomly_generated_passwords(random_string, result, count):
 
 
 @when(
-    "the endpoint processes concurrent requests to post the passwords and retrieve the hashes"
+    "the endpoint processes concurrent requests to post the passwords "
+    "and retrieve the hashes"
 )
 def post_and_retrieve_concurrently(client, bulk_call, result):
     result.collected_data = _do_bulk_upload(client, bulk_call, result.passwords)
 
 
 @when(
-    "the endpoint processes sequential requests to retrieve any initially mismatched hashes"
+    "the endpoint processes sequential requests to retrieve "
+    "any initially mismatched hashes"
 )
 def find_mismatches_and_reattempt(client, hash_from, result):
     result.failed_matches = _filter_to_mismatches(hash_from, result.collected_data)

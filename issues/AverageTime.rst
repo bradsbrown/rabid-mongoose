@@ -21,7 +21,7 @@ How to reproduce
 Measure the round-trip time (as described above)
 for multiple calls and compare to the ``/stats`` call ``AverageTime`` key.
 
-Can be automatically tested via ``pytest test/test_stats.py``.
+Can be automatically tested via ``./run_tests.sh test/steps/test_stats.py``.
 
 Sample Output
 -------------

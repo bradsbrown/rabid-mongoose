@@ -25,17 +25,23 @@ def randomly_generated_passwords(random_string, result, count):
     result.passwords = [random_string() for _ in range(int(count))]
 
 
-@when("the endpoint processes concurrent requests to post the passwords and retrieve the hashes")
+@when(
+    "the endpoint processes concurrent requests to post the passwords and retrieve the hashes"
+)
 def post_and_retrieve_concurrently(client, bulk_call, result):
     result.collected_data = _do_bulk_upload(client, bulk_call, result.passwords)
 
 
-@when("the endpoint processes sequential requests to retrieve any initially mismatched hashes")
+@when(
+    "the endpoint processes sequential requests to retrieve any initially mismatched hashes"
+)
 def find_mismatches_and_reattempt(client, hash_from, result):
     result.failed_matches = _filter_to_mismatches(hash_from, result.collected_data)
     for idx, entry_tuple in enumerate(result.failed_matches):
         result.failed_matches[idx] = (
-            entry_tuple[0], entry_tuple[1], client.get_hash(entry_tuple[1]).text
+            entry_tuple[0],
+            entry_tuple[1],
+            client.get_hash(entry_tuple[1]).text,
         )
 
 
@@ -63,7 +69,9 @@ def validate_unique_jobid_and_hash_counts(result):
 
 @then("no mismatches between password and hash remain")
 def check_remaining_failures_after_retry(hash_from, result):
-    final_failures = list(filter(lambda x: hash_from(x[0]) != x[2], result.failed_matches))
+    final_failures = list(
+        filter(lambda x: hash_from(x[0]) != x[2], result.failed_matches)
+    )
     msg = (
         f"Out of {len(result.failed_matches)} initial failures, "
         f"{len(final_failures)} remained after retry."

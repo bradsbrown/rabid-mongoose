@@ -42,6 +42,7 @@ class HashClient(requests.Session):
 # Static Fixtures #
 ###################
 
+
 @pytest.fixture(scope="session", autouse=True)
 def port():
     """Ensure a port is set and shared for server and client."""
@@ -55,16 +56,13 @@ def port():
 def client(port):
     """Create requests client with base url built-in."""
     client = HashClient(hash_port=port)
-    adapter = requests.adapters.HTTPAdapter(
-        pool_connections=100, pool_maxsize=100
-    )
-    client.mount('http://', adapter)
+    adapter = requests.adapters.HTTPAdapter(pool_connections=100, pool_maxsize=100)
+    client.mount("http://", adapter)
     return client
 
 
 @pytest.fixture(scope="module")
 def start_server():
-
     def _start_server():
         subprocess.Popen(["./bin/broken-hashserve_darwin"])
         # allow an arbitrary few seconds for the server to start up
@@ -90,14 +88,15 @@ def result():
 # Fixture Functions #
 #####################
 
+
 @pytest.fixture
 def hash_from():
     """Accept a password and return the expected hash value."""
 
     def _hash_from(password):
         return base64.b64encode(
-            hashlib.sha512(password.encode('utf-8')).digest()
-        ).decode('utf-8')
+            hashlib.sha512(password.encode("utf-8")).digest()
+        ).decode("utf-8")
 
     return _hash_from
 
@@ -117,7 +116,7 @@ def random_string():
     """Generate a random string of printable ascii characters."""
 
     def _random_string(length=10):
-        return ''.join(random.choice(string.printable) for _ in range(length))
+        return "".join(random.choice(string.printable) for _ in range(length))
 
     return _random_string
 
@@ -127,7 +126,7 @@ def random_unicode():
     """Generate a random string of printable unicode characters."""
 
     def _random_unicode(length=10):
-        return ''.join(random_unicode_char() for _ in range(length))
+        return "".join(random_unicode_char() for _ in range(length))
 
     return _random_unicode
 
@@ -138,14 +137,10 @@ def _get_json(response):
 
 @pytest.fixture
 def bulk_call():
-
     def _bulk_call(call_fn, values, data_extract=_get_json):
         result_dict = {}
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            future_to_data = {
-                executor.submit(call_fn, v): v
-                for v in values
-            }
+            future_to_data = {executor.submit(call_fn, v): v for v in values}
             for future in concurrent.futures.as_completed(future_to_data):
                 v = future_to_data[future]
                 result = data_extract(future.result())
@@ -168,6 +163,7 @@ def running_server(start_server):
 #####################
 # common Then steps #
 #####################
+
 
 @then("the response is successful")
 def response_is_successful(result):

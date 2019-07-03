@@ -10,9 +10,7 @@ scenarios("../features/repeats.feature")
 @when("the endpoint processes multiple requests to post the same password")
 def repeated_password_posts(client, random_string, result):
     result.password = random_string()
-    result.job_ids = [
-        client.post_password(result.password).json() for _ in range(20)
-    ]
+    result.job_ids = [client.post_password(result.password).json() for _ in range(20)]
 
 
 @when("the hash values for each are retrieved")

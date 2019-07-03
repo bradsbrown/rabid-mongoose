@@ -5,9 +5,12 @@ import os
 import random
 import string
 import subprocess
+import time
+import types
 
 import requests
 import pytest
+from pytest_bdd import given, then
 
 
 class HashClient(requests.Session):
@@ -35,6 +38,10 @@ class HashClient(requests.Session):
         return self.post("/hash", data="shutdown")
 
 
+###################
+# Static Fixtures #
+###################
+
 @pytest.fixture(scope="session", autouse=True)
 def port():
     """Ensure a port is set and shared for server and client."""
@@ -60,13 +67,10 @@ def start_server():
 
     def _start_server():
         subprocess.Popen(["./bin/broken-hashserve_darwin"])
+        # allow an arbitrary few seconds for the server to start up
+        time.sleep(2)
 
     return _start_server
-
-
-@pytest.fixture
-def running_server(start_server):
-    start_server()
 
 
 @pytest.fixture(scope="module")
@@ -76,6 +80,15 @@ def server(start_server, client):
     yield
     client.shutdown()
 
+
+@pytest.fixture
+def result():
+    return types.SimpleNamespace()
+
+
+#####################
+# Fixture Functions #
+#####################
 
 @pytest.fixture
 def hash_from():
@@ -140,3 +153,37 @@ def bulk_call():
         return result_dict
 
     return _bulk_call
+
+
+######################
+# common Given steps #
+######################
+
+
+@given("a running server")
+def running_server(start_server):
+    start_server()
+
+
+#####################
+# common Then steps #
+#####################
+
+@then("the response is successful")
+def response_is_successful(result):
+    assert 200 <= result.response.status_code <= 299
+
+
+@then("the response is a client error")
+def response_is_client_error(result):
+    assert 400 <= result.response.status_code <= 499
+
+
+@then("the response content is empty")
+def response_content_is_empty(result):
+    assert not result.response.content
+
+
+@then("the hash returned matches a hash of the password")
+def hashes_match(hash_from, result):
+    assert result.hash == hash_from(result.password)

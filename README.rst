@@ -18,16 +18,12 @@ Ok, but how do I run it?
 ------------------------
 
 This is the fun part.
-All you need to do it call ``pytest .``!
+All you need to do it call ``./run_tests.sh``!
 The test suite will automatically spin up the API server,
 run the tests,
 and report results,
 then spin down the server when finished.
 
-.. Note::
-
-    If you want more information as it runs,
-    you can call ``pytest -v .`` to get more details in the console.
 
 Very cool! But did you find any bugs?
 -------------------------------------
@@ -53,5 +49,8 @@ What is the structure here?
 You'll find 3 main directories:
 
 - ``bin`` - contains the compiled server executable as well as its version file.
-- ``test`` - contains the test suite. Each ``test_{something}`` file covers a particular feature of the server.
 - ``issues`` - contains documentation of issues found, as well as a template for future issue reports.
+- ``test`` - contains the test suite. There are 2 subdirectories to note:
+
+  - ``features`` - contains the Gherkin descriptions of the endpoint specifications being tested
+  - ``steps`` - contains the python code to run the tests as defined in the Gherkin

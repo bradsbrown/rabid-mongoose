@@ -54,3 +54,23 @@ You'll find 3 main directories:
 
   - ``features`` - contains the Gherkin descriptions of the endpoint specifications being tested
   - ``steps`` - contains the python code to run the tests as defined in the Gherkin
+
+How do I modify/add tests?
+--------------------------
+
+To contribute, there are a few things you'll need to do,
+and a few you'll need to know.
+
+All the details:
+
+- Install the development requirements (``pip install -r dev-requirements.txt``)
+- Before committing, run ``./self_check.sh`` to autoformat and lint your code
+- It might be helpful to review the workings of pytest-bdd_ and pytest_
+- Currently, all shared steps are stored in ``tests/steps/conftest.py``,
+  with feature-specific step defs in the individual ``test_{feature}.py`` files.
+- If you want to test against specific features or scenarios,
+  the args in the `pytest specifications`_ can be passed into `./run_tests.sh`
+
+.. _pytest: https://pytest.org
+.. _pytest-bdd: https://pytest-bdd.readthedocs.io/en/latest/
+.. _`pytest specifications`: https://docs.pytest.org/en/latest/usage.html#specifying-tests-selecting-tests

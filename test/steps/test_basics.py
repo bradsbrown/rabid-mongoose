@@ -41,3 +41,10 @@ def job_id_is_returned(result):
     assert job_id
     # The ID should be a single value (not dict, list, etc.)
     assert isinstance(job_id, (str, int))
+
+
+@then("the Job ID is returned immediately")
+def job_id_is_immediate(result):
+    response_secs = result.response.elapsed.total_seconds()
+    msg = f"The response took {response_secs:0.2f} seconds to return!"
+    assert response_secs < 1, msg

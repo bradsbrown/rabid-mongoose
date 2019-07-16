@@ -10,6 +10,10 @@ Feature: Hash endpoint GET and POST basic tests
     And the hash for that password is requested
     Then the hash returned matches a hash of the password
 
+  Scenario: password post returns immediate response
+    When the endpoint processes a request to post a password
+    Then the Job ID is returned immediately
+
   Scenario: Long strings are successful
     Given a password that is a long string
     When the endpoint processes a request to post a password

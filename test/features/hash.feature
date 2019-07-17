@@ -40,3 +40,4 @@ Feature: Hash endpoint GET and POST basic tests
       | is an integer                    |
       | is a string                      |
       | is a list                        |
+      | is a non-JSON dict               |

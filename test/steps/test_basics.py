@@ -39,12 +39,14 @@ def retrieve_invalid_job_id(client, random_string, result):
 @when("the endpoint processes a password payload that <description>")
 def post_payload_with_no_pw_key(client, result, random_string, description):
     payload = {
-        "is a dict with no 'password' key": lambda: {"foo": "bar"},
+        "is a dict with no 'password' key": lambda: {random_string(): random_string()},
         "is an integer": lambda: random.randint(1, 999999),
         "is a string": random_string,
-        "is a list": lambda: [random_string() for _ in range(5)]
+        "is a list": lambda: [random_string() for _ in range(5)],
+        "is a non-JSON dict": lambda: {random_string(): random_string()},
     }[description]()
-    result.response = client.post("/hash", json=payload)
+    kwargs = {"data" if "non-JSON" in description else "json": payload}
+    result.response = client.post("/hash", **kwargs)
 
 
 @then("a Job ID is returned")

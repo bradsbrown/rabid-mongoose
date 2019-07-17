@@ -27,7 +27,7 @@ It will consistently be approximately 5 seconds.
 Sample Output
 -------------
 
-From the relevant scenario output:
+From the relevant scenario output::
 
     ================================================================================= FAILURES ==================================================================================
     _______________________________________________________________ test_password_post_returns_immediate_response _______________________________________________________________

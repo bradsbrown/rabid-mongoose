@@ -31,5 +31,12 @@ Feature: Hash endpoint GET and POST basic tests
     Then the response is a client error
 
   Scenario: Invalid formats are rejected
-    When the endpoint processes a password payload that has no 'password' key
+    When the endpoint processes a password payload that <description>
     Then the response is a client error
+
+    Examples:
+      | description                      |
+      | is a dict with no 'password' key |
+      | is an integer                    |
+      | is a string                      |
+      | is a list                        |

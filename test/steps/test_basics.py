@@ -1,4 +1,6 @@
 """Basic tests around the `/hash` GET and POST calls."""
+import random
+
 import pytest
 from pytest_bdd import scenarios, given, when, then
 
@@ -34,9 +36,15 @@ def retrieve_invalid_job_id(client, random_string, result):
     result.response = client.get_hash(random_string())
 
 
-@when("the endpoint processes a password payload that has no 'password' key")
-def post_payload_with_no_pw_key(client, result):
-    result.response = client.post("/hash", json={"foo": "bar"})
+@when("the endpoint processes a password payload that <description>")
+def post_payload_with_no_pw_key(client, result, random_string, description):
+    payload = {
+        "is a dict with no 'password' key": lambda: {"foo": "bar"},
+        "is an integer": lambda: random.randint(1, 999999),
+        "is a string": random_string,
+        "is a list": lambda: [random_string() for _ in range(5)]
+    }[description]()
+    result.response = client.post("/hash", json=payload)
 
 
 @then("a Job ID is returned")

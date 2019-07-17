@@ -8,6 +8,20 @@ scenarios("../features/concurrency.feature")
 
 
 def _do_bulk_upload(client, bulk_call, passwords):
+    """
+    Post a list of passwords and return a list including Job IDs and hashes.
+
+    Args:
+        client: an instance of HashClient (from conftest fixtures)
+        bulk_call: the bulk_call helper (from contest fixtures)
+        passwords: a list of strings to be used as passwords
+
+    Returns:
+        list[tuple[str,int,str]]: A list of tuples, each of which will contain
+        3 elements - the original password, the corresponding job id,
+        and the hashed valued returned from that job id.
+
+    """
     pw_to_id_map = bulk_call(client.post_password, passwords)
     id_to_hash_map = bulk_call(
         client.get_hash, list(pw_to_id_map.values()), data_extract=lambda x: x.text
@@ -16,6 +30,21 @@ def _do_bulk_upload(client, bulk_call, passwords):
 
 
 def _filter_to_mismatches(hash_from, result_list):
+    """
+    Given a list as returned from ``_do_bulk_upload``, filter to failures.
+
+    'Failures' here are defined as passwords for which the hash
+    returned from the job ID do not match to a local hash of password itself.
+
+    Args:
+        hash_from: the callable fixture from conftest
+        result_list: a list of results from ``_do_bulk_upload``
+
+    Returns:
+        list[tuple[str,int,str]]: same format as the input list,
+        filtered to only tuples whose hash doesn't match the starting password.
+
+    """
     return list(filter(lambda x: hash_from(x[0]) != x[2], result_list))
 
 

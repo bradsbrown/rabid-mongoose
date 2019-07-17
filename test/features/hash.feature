@@ -29,3 +29,7 @@ Feature: Hash endpoint GET and POST basic tests
   Scenario: Retrieve invalid Job ID fails
     When the endpoint processes a request to retrieve an invalid Job ID
     Then the response is a client error
+
+  Scenario: Invalid formats are rejected
+    When the endpoint processes a password payload that has no 'password' key
+    Then the response is a client error

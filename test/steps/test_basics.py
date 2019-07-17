@@ -34,6 +34,11 @@ def retrieve_invalid_job_id(client, random_string, result):
     result.response = client.get_hash(random_string())
 
 
+@when("the endpoint processes a password payload that has no 'password' key")
+def post_payload_with_no_pw_key(client, result):
+    result.response = client.post("/hash", json={"foo": "bar"})
+
+
 @then("a Job ID is returned")
 def job_id_is_returned(result):
     job_id = result.response.json()

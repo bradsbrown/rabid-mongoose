@@ -23,6 +23,7 @@ However, if no "password" key is present,
 the value of first key in the dict will be used instead.
 
 Note::
+
     In testing, it appears that subsequent key/value pairs
     have no impact on the hashed value,
     and the "password" key will always take precedence.
